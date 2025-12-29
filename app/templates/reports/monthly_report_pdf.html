@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Rapport Mensuel - {{ month }}/{{ year }}</title>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 11pt;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .header {
+            border-bottom: 2px solid #FF6B35;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .company-name {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #1A1F3A;
+            margin: 0;
+        }
+
+        .report-title {
+            font-size: 16pt;
+            color: #FF6B35;
+            margin-top: 5px;
+        }
+
+        .summary-box {
+            background-color: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .summary-grid {
+            width: 100%;
+        }
+
+        .summary-item {
+            padding: 10px;
+        }
+
+        .summary-label {
+            font-size: 10pt;
+            color: #6B7280;
+            text-transform: uppercase;
+        }
+
+        .summary-value {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #F3F4F6;
+            color: #374151;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #D1D5DB;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #E5E7EB;
+            vertical-align: top;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 9pt;
+            text-align: center;
+            color: #9CA3AF;
+            border-top: 1px solid #E5E7EB;
+            padding-top: 10px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 9999px;
+            font-size: 8pt;
+            font-weight: bold;
+        }
+
+        .badge-success {
+            background-color: #DEF7EC;
+            color: #03543F;
+        }
+
+        .fcfa {
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1 class="company-name">{{ current_user.company_name or "IMMOGEST" }}</h1>
+        <div class="report-title">Rapport de Gestion Mensuelle - {{ "%02d"|format(month) }}/{{ year }}</div>
+        <p style="font-size: 10pt; color: #666;">Généré le {{ date_generated }}</p>
+    </div>
+
+    <div class="summary-box">
+        <table class="summary-grid">
+            <tr>
+                <td class="summary-item">
+                    <div class="summary-label">Revenus Attendus</div>
+                    <div class="summary-value">{{ "{:,.0f}".format(total_expected).replace(',', ' ') }} FCFA</div>
+                </td>
+                <td class="summary-item">
+                    <div class="summary-label">Revenus Encaissés</div>
+                    <div class="summary-value" style="color: #059669;">{{ "{:,.0f}".format(total_received).replace(',',
+                        ' ') }} FCFA</div>
+                </td>
+                <td class="summary-item">
+                    <div class="summary-label">Solde Restante</div>
+                    <div class="summary-value" style="color: {{ '#DC2626' if unpaid_total > 0 else '#059669' }};">
+                        {{ "{:,.0f}".format(unpaid_total).replace(',', ' ') }} FCFA
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h3>Détail des Paiements Encaissés</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Locataire</th>
+                <th>Bien</th>
+                <th>Quittance</th>
+                <th class="text-right">Montant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr>
+                <td>{{ payment.date.strftime('%d/%m/%Y') }}</td>
+                <td>{{ payment.tenant.full_name }}</td>
+                <td>{{ payment.prop.name }}</td>
+                <td>{{ payment.receipt_number }}</td>
+                <td class="text-right"><strong>{{ "{:,.0f}".format(payment.amount).replace(',', ' ') }}</strong></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 30px; color: #999;">
+                    Aucun encaissement enregistré pour ce mois.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Ce rapport a été généré automatiquement par le système de gestion ImmoGest.</p>
+        <p>{{ current_user.company_name }} - {{ current_user.phone }} - {{ current_user.email }}</p>
+    </div>
+</body>
+
+</html>

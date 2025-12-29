@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Aide & FAQ{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-extrabold text-gray-900 font-display mb-4">Besoin d'aide ?</h1>
+        <p class="text-lg text-gray-600">Découvrez comment tirer le meilleur parti d'ImmoGest avec nos tutoriels et FAQ.
+        </p>
+    </div>
+
+    <!-- Tutorials Section -->
+    <div class="mb-16">
+        <h2 class="text-2xl font-bold text-secondary mb-8 border-b pb-2">🚀 Guide de démarrage rapide</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Step 1 -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-primary">
+                <div
+                    class="w-12 h-12 bg-orange-100 text-primary rounded-full flex items-center justify-center font-bold text-xl mb-4">
+                    1</div>
+                <h3 class="text-lg font-semibold mb-2">Ajouter un bien</h3>
+                <p class="text-gray-600 text-sm">Allez dans "Mes Biens", cliquez sur "Ajouter un bien" et remplissez les
+                    détails (type, loyer, photos).</p>
+            </div>
+            <!-- Step 2 -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-primary">
+                <div
+                    class="w-12 h-12 bg-orange-100 text-primary rounded-full flex items-center justify-center font-bold text-xl mb-4">
+                    2</div>
+                <h3 class="text-lg font-semibold mb-2">Enregistrer un locataire</h3>
+                <p class="text-gray-600 text-sm">Dans "Locataires", liez un nouvel arrivant à l'un de vos biens vacants
+                    pour commencer le contrat.</p>
+            </div>
+            <!-- Step 3 -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-primary">
+                <div
+                    class="w-12 h-12 bg-orange-100 text-primary rounded-full flex items-center justify-center font-bold text-xl mb-4">
+                    3</div>
+                <h3 class="text-lg font-semibold mb-2">Percevoir les loyers</h3>
+                <p class="text-gray-600 text-sm">Sélectionnez le locataire, validez le montant et générez instantanément
+                    sa quittance PDF.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div>
+        <h2 class="text-2xl font-bold text-secondary mb-8 border-b pb-2">❓ Foire Aux Questions</h2>
+        <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <button
+                    class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none transition-colors hover:bg-gray-50"
+                    onclick="toggleFaq(1)">
+                    <span class="font-medium text-gray-900">Puis-je modifier un paiement après enregistrement ?</span>
+                    <svg id="icon-1" class="w-5 h-5 text-gray-500 transform transition-transform" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="faq-1" class="hidden px-6 pb-4 text-gray-600 text-sm">
+                    Non, pour garantir l'intégrité comptable, un paiement n'est pas modifiable. Si vous avez fait une
+                    erreur, vous pouvez le signaler dans les notes ou contacter le support.
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <button
+                    class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none transition-colors hover:bg-gray-50"
+                    onclick="toggleFaq(2)">
+                    <span class="font-medium text-gray-900">Comment exporter mes données au format Excel ?</span>
+                    <svg id="icon-2" class="w-5 h-5 text-gray-500 transform transition-transform" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="faq-2" class="hidden px-6 pb-4 text-gray-600 text-sm">
+                    Dans l'onglet "Paiements", cliquez sur le bouton "Exporter CSV". Vous pourrez alors ouvrir ce
+                    fichier avec Microsoft Excel ou tout autre tableur.
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <button
+                    class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none transition-colors hover:bg-gray-50"
+                    onclick="toggleFaq(3)">
+                    <span class="font-medium text-gray-900">Quelles sont les limites de fichiers ?</span>
+                    <svg id="icon-3" class="w-5 h-5 text-gray-500 transform transition-transform" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="faq-3" class="hidden px-6 pb-4 text-gray-600 text-sm">
+                    Les photos des biens sont limitées à 5 Mo chacune. Pour les documents de locataires (contrats,
+                    identité), la limite est de 16 Mo par fichier.
+                </div>
+            </div>
+
+            <!-- FAQ Item 4 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <button
+                    class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none transition-colors hover:bg-gray-50"
+                    onclick="toggleFaq(4)">
+                    <span class="font-medium text-gray-900">Comment fonctionne le rappel SMS ?</span>
+                    <svg id="icon-4" class="w-5 h-5 text-gray-500 transform transition-transform" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="faq-4" class="hidden px-6 pb-4 text-gray-600 text-sm">
+                    Si un locataire n'a pas payé son loyer au-delà de la date fixée, le système génère une alerte sur
+                    votre tableau de bord. Un rappel automatique peut être envoyé via l'API Orange (en cours
+                    d'activation).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Support -->
+    <div class="mt-16 bg-secondary text-white p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between">
+        <div>
+            <h3 class="text-2xl font-bold mb-2">Encore des questions ?</h3>
+            <p class="text-gray-300">Notre équipe de support est là pour vous aider.</p>
+        </div>
+        <a href="mailto:support@immogest.sn"
+            class="mt-6 md:mt-0 px-8 py-3 bg-primary rounded-full hover:bg-orange-600 transition-colors font-bold">Nous
+            contacter</a>
+    </div>
+</div>
+
+<script>
+    function toggleFaq(id) {
+        const content = document.getElementById(`faq-${id}`);
+        const icon = document.getElementById(`icon-${id}`);
+
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+        } else {
+            content.classList.add('hidden');
+            icon.classList.remove('rotate-180');
+        }
+    }
+</script>
+{% endblock %}

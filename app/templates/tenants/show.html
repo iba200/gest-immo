@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tenant.full_name }}{% endblock %}
+
+{% block content %}
+<div class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="md:flex md:items-center md:justify-between">
+            <div class="flex-1 min-w-0">
+                <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate font-display">{{
+                    tenant.full_name }}</h2>
+                <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        {% if tenant.property %}
+                        Locataire de : <a href="{{ url_for('property.show', id=tenant.property.id) }}"
+                            class="ml-1 hover:text-primary underline">{{ tenant.property.name }}</a>
+                        {% else %}
+                        Aucun bien attribué
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                <div class="flex space-x-2">
+                    <a href="{{ url_for('tenant.edit', id=tenant.id) }}"
+                        class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 sm:w-auto">
+                        Modifier
+                    </a>
+                    <form method="POST" action="{{ url_for('tenant.archive', id=tenant.id) }}"
+                        onsubmit="return confirm('Êtes-vous sûr de vouloir archiver ce locataire ? Le bien sera libéré.');">
+                        <button type="submit"
+                            class="inline-flex items-center justify-center rounded-md border border-yellow-300 bg-white px-4 py-2 text-sm font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 sm:w-auto">
+                            Archiver
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Informations Personnelles</h3>
+            </div>
+            <div class="border-t border-gray-200">
+                <dl>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Nom complet</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ tenant.full_name }}</dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Email</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ tenant.email }}</dd>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Téléphone</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ tenant.phone }}</dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Profession / Emploi</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ tenant.job_description }}</dd>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Contact d'urgence</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ tenant.emergency_contact }}</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Documents Section -->
+        {% if tenant.document_list %}
+        <div class="mt-8 bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Documents</h3>
+            </div>
+            <div class="border-t border-gray-200">
+                <ul role="list" class="divide-y divide-gray-200">
+                    {% for doc in tenant.document_list %}
+                    <li class="px-4 py-4 sm:px-6 flex items-center justify-between">
+                        <div class="text-sm font-medium text-primary break-all">
+                            {{ doc }}
+                        </div>
+                        <div class="ml-4 flex-shrink-0">
+                            <a href="{{ url_for('static', filename='uploads/tenants/' + doc) }}" target="_blank"
+                                class="font-medium text-primary hover:text-orange-600">
+                                Télécharger
+                            </a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

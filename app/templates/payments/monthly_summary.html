@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Récapitulatif Mensuel{% endblock %}
+
+{% block content %}
+<div class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="md:flex md:items-center md:justify-between">
+            <div class="flex-1 min-w-0">
+                <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate font-display">
+                    Récapitulatif Mensuel des Revenus
+                </h2>
+                <p class="mt-2 text-sm text-gray-700">Analyse détaillée par mois</p>
+            </div>
+            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                <a href="{{ url_for('payment.index') }}"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Retour aux paiements
+                </a>
+            </div>
+        </div>
+
+        <!-- Overall Statistics -->
+        <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <dt class="text-sm font-medium text-gray-500 truncate">Revenu Total</dt>
+                    <dd class="mt-1 text-3xl font-semibold text-primary">{{ total_revenue|int }} FCFA</dd>
+                </div>
+            </div>
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <dt class="text-sm font-medium text-gray-500 truncate">Total Paiements</dt>
+                    <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ total_payments }}</dd>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Breakdown Table -->
+        <div class="mt-8">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Période</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Loyers</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Charges</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pénalités</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nb. Paiements
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">En retard</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for data in monthly_data %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {% set months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct',
+                                'Nov', 'Déc'] %}
+                                {{ months[data.month - 1] }} {{ data.year }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ data.total_rent|int }} FCFA
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ data.total_charges|int }} FCFA
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {% if data.total_penalties > 0 %}
+                                <span class="text-red-600 font-semibold">{{ data.total_penalties|int }} FCFA</span>
+                                {% else %}
+                                0 FCFA
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-primary">
+                                {{ data.total_amount|int }} FCFA
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                {{ data.payment_count }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                {% if data.late_count > 0 %}
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    {{ data.late_count }}
+                                </span>
+                                {% else %}
+                                <span class="text-gray-400">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

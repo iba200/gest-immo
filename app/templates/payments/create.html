@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Nouveau Paiement{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate font-display">Enregistrer un
+                paiement</h2>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <form action="" method="post" class="space-y-6 bg-white p-8 rounded-lg shadow">
+            {{ form.hidden_tag() }}
+
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+
+                <div class="sm:col-span-6">
+                    {{ form.tenant_id.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.tenant_id(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border", id="tenant_select") }}
+                    </div>
+                </div>
+
+                <!-- Payment Breakdown Section -->
+                <div class="sm:col-span-6">
+                    <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Détail du paiement</h3>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.rent.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        {{ form.rent(class="focus:ring-primary focus:border-primary block w-full pl-3 pr-12 sm:text-sm
+                        border-gray-300 rounded-md py-2 border", id="rent_input") }}
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 sm:text-sm">FCFA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.charges.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        {{ form.charges(class="focus:ring-primary focus:border-primary block w-full pl-3 pr-12
+                        sm:text-sm
+                        border-gray-300 rounded-md py-2 border", id="charges_input") }}
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 sm:text-sm">FCFA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.penalties.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        {{ form.penalties(class="focus:ring-primary focus:border-primary block w-full pl-3 pr-12
+                        sm:text-sm
+                        border-gray-300 rounded-md py-2 border", id="penalties_input") }}
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 sm:text-sm">FCFA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.discount.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        {{ form.discount(class="focus:ring-primary focus:border-primary block w-full pl-3 pr-12
+                        sm:text-sm
+                        border-gray-300 rounded-md py-2 border", id="discount_input") }}
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 sm:text-sm">FCFA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-6">
+                    {{ form.amount.label(class="block text-sm font-medium text-gray-900") }}
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        {{ form.amount(class="focus:ring-primary focus:border-primary block w-full pl-3 pr-12 sm:text-sm
+                        border-gray-300 rounded-md py-2 border font-bold text-lg bg-gray-50", id="amount_input",
+                        readonly=true) }}
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span class="text-gray-900 sm:text-sm font-bold">FCFA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Period and Payment Details -->
+                <div class="sm:col-span-6">
+                    <h3 class="text-lg font-medium text-gray-900 border-b pb-2 mt-4">Période et Détails</h3>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.period_month.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.period_month(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.period_year.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.period_year(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.date.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.date(class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm
+                        border-gray-300 rounded-md py-2 px-3 border", type="date") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.payment_method.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.payment_method(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-6">
+                    {{ form.transaction_ref.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.transaction_ref(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-6">
+                    {{ form.notes.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.notes(class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm
+                        border-gray-300 rounded-md py-2 px-3 border", rows=2) }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-5">
+                <div class="flex justify-end">
+                    <a href="{{ url_for('payment.index') }}"
+                        class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Annuler</a>
+                    {{ form.submit(class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm
+                    text-sm font-medium rounded-md text-white bg-primary hover:bg-orange-600 focus:outline-none
+                    focus:ring-2 focus:ring-offset-2 focus:ring-primary") }}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Tenant data passed from backend
+    const tenantData = {{ tenant_data| tojson | safe }};
+
+    // Auto-fill rent and charges when tenant is selected
+    document.getElementById('tenant_select').addEventListener('change', function () {
+        const tenantId = this.value;
+
+        if (tenantId && tenantData[tenantId]) {
+            const data = tenantData[tenantId];
+            document.getElementById('rent_input').value = data.rent;
+            document.getElementById('charges_input').value = data.charges;
+
+            // Trigger calculation
+            calculateTotal();
+        } else {
+            // Clear fields if no tenant selected
+            document.getElementById('rent_input').value = '';
+            document.getElementById('charges_input').value = '';
+            document.getElementById('penalties_input').value = '0';
+            document.getElementById('discount_input').value = '0';
+            document.getElementById('amount_input').value = '';
+        }
+    });
+
+    // Auto-calculate total amount
+    function calculateTotal() {
+        const rent = parseFloat(document.getElementById('rent_input').value) || 0;
+        const charges = parseFloat(document.getElementById('charges_input').value) || 0;
+        const penalties = parseFloat(document.getElementById('penalties_input').value) || 0;
+        const discount = parseFloat(document.getElementById('discount_input').value) || 0;
+
+        const total = rent + charges + penalties - discount;
+        document.getElementById('amount_input').value = total.toFixed(0);
+    }
+
+    // Attach listeners to all payment fields
+    ['rent_input', 'charges_input', 'penalties_input', 'discount_input'].forEach(function (id) {
+        document.getElementById(id).addEventListener('input', calculateTotal);
+    });
+</script>
+{% endblock %}

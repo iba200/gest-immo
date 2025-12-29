@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate font-display">{{ title }}</h2>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <form action="" method="post" enctype="multipart/form-data" class="space-y-6 bg-white p-8 rounded-lg shadow">
+            {{ form.hidden_tag() }}
+
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div class="sm:col-span-4">
+                    {{ form.name.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.name(class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm
+                        border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                    {% for error in form.name.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="sm:col-span-2">
+                    {{ form.type.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.type(class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm
+                        border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-6">
+                    {{ form.address.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.address(class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm
+                        border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.city.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.city(class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm
+                        border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    {{ form.neighborhood.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.neighborhood(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-2">
+                    {{ form.surface.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.surface(class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm
+                        border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+                <div class="sm:col-span-2">
+                    {{ form.bedrooms.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.bedrooms(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+                <div class="sm:col-span-2">
+                    {{ form.bathrooms.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.bathrooms(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-2">
+                    {{ form.rent_amount.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.rent_amount(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+                <div class="sm:col-span-2">
+                    {{ form.charges.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.charges(class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm
+                        border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+                <div class="sm:col-span-2">
+                    {{ form.security_deposit.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.security_deposit(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-6">
+                    {{ form.equipment.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.equipment(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border") }}
+                    </div>
+                </div>
+
+                <!-- Photos Field -->
+                <div class="sm:col-span-6">
+                    {{ form.photos.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.photos(class="block w-full text-sm text-gray-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-md file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-primary file:text-white
+                        hover:file:bg-orange-600", multiple=True) }}
+                    </div>
+                </div>
+
+                <div class="sm:col-span-6">
+                    {{ form.description.label(class="block text-sm font-medium text-gray-700") }}
+                    <div class="mt-1">
+                        {{ form.description(class="shadow-sm focus:ring-primary focus:border-primary block w-full
+                        sm:text-sm border-gray-300 rounded-md py-2 px-3 border", rows=3) }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-5">
+                <div class="flex justify-end">
+                    <a href="{{ url_for('property.index') }}"
+                        class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Annuler</a>
+                    {{ form.submit(class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm
+                    text-sm font-medium rounded-md text-white bg-primary hover:bg-orange-600 focus:outline-none
+                    focus:ring-2 focus:ring-offset-2 focus:ring-primary") }}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
