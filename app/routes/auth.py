@@ -49,7 +49,22 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Félicitations, vous êtes maintenant inscrit !', 'success')
+        
+        # Send verification email
+        token = user.get_verification_token()
+        from app.utils.email import send_email
+        from flask import current_app
+        verify_url = url_for('auth.verify_email', token=token, _external=True)
+        html_body = render_template('auth/email/verify_account.html', user=user, url=verify_url)
+        text_body = render_template('auth/email/verify_account.txt', user=user, url=verify_url)
+        
+        send_email('Confirmez votre compte ImmoGest',
+                   current_app.config['MAIL_DEFAULT_SENDER'],
+                   [user.email],
+                   text_body,
+                   html_body)
+        
+        flash('Un e-mail de confirmation vous a été envoyé. Veuillez vérifier votre boîte de réception.', 'info')
         return redirect(url_for('auth.login'))
     
     return render_template('auth/register.html', title='Inscription', form=form)
@@ -145,3 +160,47 @@ def reset_password(token):
         return redirect(url_for('auth.login'))
         
     return render_template('auth/reset_password.html', title='Nouveau mot de passe', form=form)
+
+
+@auth_bp.route('/verify_email/<token>')
+def verify_email(token):
+    if current_user.is_authenticated and current_user.is_verified:
+        return redirect(url_for('main.dashboard'))
+    
+    user = User.verify_verification_token(token)
+    if not user:
+        flash('Le lien de confirmation est invalide ou a expiré.', 'error')
+        return redirect(url_for('auth.login'))
+    
+    if user.is_verified:
+        flash('Votre compte est déjà confirmé. Vous pouvez vous connecter.', 'info')
+    else:
+        user.is_verified = True
+        db.session.commit()
+        flash('Votre compte a été confirmé avec succès ! BIenvenue dans ImmoGest.', 'success')
+    
+    return redirect(url_for('auth.login'))
+
+
+@auth_bp.route('/resend_verification')
+@login_required
+def resend_verification():
+    if current_user.is_verified:
+        flash('Votre compte est déjà confirmé.', 'info')
+        return redirect(url_for('main.dashboard'))
+    
+    token = current_user.get_verification_token()
+    from app.utils.email import send_email
+    from flask import current_app
+    verify_url = url_for('auth.verify_email', token=token, _external=True)
+    html_body = render_template('auth/email/verify_account.html', user=current_user, url=verify_url)
+    text_body = render_template('auth/email/verify_account.txt', user=current_user, url=verify_url)
+    
+    send_email('Confirmez votre compte ImmoGest',
+               current_app.config['MAIL_DEFAULT_SENDER'],
+               [current_user.email],
+               text_body,
+               html_body)
+    
+    flash('Un nouvel e-mail de confirmation vous a été envoyé.', 'info')
+    return redirect(url_for('main.dashboard'))

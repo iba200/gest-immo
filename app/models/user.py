@@ -23,6 +23,7 @@ class User(UserMixin, db.Model):
     # Choices: 'Starter', 'Professionnel', 'Premium'
     plan = db.Column(db.String(20), default='Starter')
     
+    is_verified = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
@@ -49,22 +50,37 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def get_reset_token(self, expires_sec=1800):
+    def get_token(self, salt='auth-salt', expires_sec=1800):
         from flask import current_app
         from itsdangerous import URLSafeTimedSerializer
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-        return s.dumps(self.id, salt='password-reset-salt')
+        return s.dumps(self.id, salt=salt)
 
     @staticmethod
-    def verify_reset_token(token, expires_sec=1800):
+    def verify_token(token, salt='auth-salt', expires_sec=1800):
         from flask import current_app
         from itsdangerous import URLSafeTimedSerializer
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token, salt='password-reset-salt', max_age=expires_sec)
+            user_id = s.loads(token, salt=salt, max_age=expires_sec)
         except:
             return None
         return User.query.get(user_id)
+
+    # Shorthands for cleaner code
+    def get_reset_token(self):
+        return self.get_token(salt='password-reset-salt')
+
+    @staticmethod
+    def verify_reset_token(token):
+        return User.verify_token(token, salt='password-reset-salt')
+
+    def get_verification_token(self):
+        return self.get_token(salt='email-verify-salt', expires_sec=86400) # 24h
+
+    @staticmethod
+    def verify_verification_token(token):
+        return User.verify_token(token, salt='email-verify-salt', expires_sec=86400)
 
     def __repr__(self):
         return f'<User {self.email}>'
