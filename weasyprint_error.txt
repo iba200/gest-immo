@@ -1,0 +1,15 @@
+PDF.__init__() takes 1 positional argument but 3 were given
+
+Traceback (most recent call last):
+  File "C:\Users\ABOU IBRAHIM\gest-immo\capture_error.py", line 7, in <module>
+    pdf = HTML(string="<h1>Test</h1>").write_pdf()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ABOU IBRAHIM\AppData\Local\Programs\Python\Python312\Lib\site-packages\weasyprint\__init__.py", line 252, in write_pdf
+    self.render(font_config, counter_style, **options)
+  File "C:\Users\ABOU IBRAHIM\AppData\Local\Programs\Python\Python312\Lib\site-packages\weasyprint\document.py", line 399, in write_pdf
+    pdf = generate_pdf(self, target, zoom, **options)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ABOU IBRAHIM\AppData\Local\Programs\Python\Python312\Lib\site-packages\weasyprint\pdf\__init__.py", line 127, in generate_pdf
+    pdf = pydyf.PDF((version or '1.7'), identifier)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: PDF.__init__() takes 1 positional argument but 3 were given

@@ -1,51 +1,38 @@
-from xhtml2pdf import pisa
+from weasyprint import HTML
 from flask import render_template
-from io import BytesIO
+import os
 
 def generate_receipt_pdf(payment):
     """
-    Generates a PDF receipt for a given payment.
+    Generates a PDF receipt for a given payment using WeasyPrint.
     """
     try:
         # Render HTML template with payment data
         html = render_template('payments/receipt_pdf.html', payment=payment)
         
-        # Create PDF
-        result_file = BytesIO()
-        pisa_status = pisa.CreatePDF(
-            src=html,
-            dest=result_file
-        )
+        # Create PDF using WeasyPrint
+        # baseURL is important for relative links (images, css)
+        pdf_bytes = HTML(string=html).write_pdf()
         
-        if pisa_status.err:
-            return None
-            
-        return result_file.getvalue()
+        return pdf_bytes
         
     except Exception as e:
-        print(f"PDF Generation Error: {e}")
+        print(f"WeasyPrint Receipt Generation Error: {e}")
         return None
 
 def generate_report_pdf(template_name, **kwargs):
     """
-    Generates a PDF report from a template and context.
+    Generates a PDF report from a template and context using WeasyPrint.
     """
     try:
         # Render HTML template with context data
         html = render_template(template_name, **kwargs)
         
-        # Create PDF
-        result_file = BytesIO()
-        pisa_status = pisa.CreatePDF(
-            src=html,
-            dest=result_file
-        )
+        # Create PDF using WeasyPrint
+        pdf_bytes = HTML(string=html).write_pdf()
         
-        if pisa_status.err:
-            return None
-            
-        return result_file.getvalue()
+        return pdf_bytes
         
     except Exception as e:
-        print(f"Report PDF Generation Error: {e}")
+        print(f"WeasyPrint Report Generation Error: {e}")
         return None

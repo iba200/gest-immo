@@ -101,45 +101,44 @@ def create():
         tenant = Tenant.query.get(form.tenant_id.data)
         if not tenant or not tenant.property:
             flash('Ce locataire n\'a pas de bien assigné.', 'error')
-            return render_template('payments/create.html', form=form, title='Nouveau Paiement')
         
         # Verify ownership
-        if tenant.property.user_id != current_user.id:
+        elif tenant.property.user_id != current_user.id:
             flash('Accès non autorisé.', 'error')
             return redirect(url_for('payment.index'))
         
         # Check for duplicate payment (same property + same period)
-        existing_payment = Payment.query.filter_by(
-            property_id=tenant.property.id,
-            period_month=form.period_month.data,
-            period_year=form.period_year.data
-        ).first()
-        
-        if existing_payment:
-            flash(f'Un paiement existe déjà pour {tenant.property.name} pour le mois {form.period_month.data}/{form.period_year.data}.', 'error')
-            return render_template('payments/create.html', form=form, title='Nouveau Paiement')
-
-        payment = Payment(
-            receipt_number=Payment.generate_receipt_number(),
-            tenant_id=tenant.id,
-            property_id=tenant.property.id,
-            rent=form.rent.data,
-            charges=form.charges.data or 0,
-            penalties=form.penalties.data or 0,
-            discount=form.discount.data or 0,
-            amount=form.amount.data,
-            date=form.date.data,
-            period_month=form.period_month.data,
-            period_year=form.period_year.data,
-            payment_method=form.payment_method.data,
-            transaction_ref=form.transaction_ref.data,
-            notes=form.notes.data
-        )
-        
-        db.session.add(payment)
-        db.session.commit()
-        flash(f'Paiement de {form.amount.data} FCFA enregistré avec succès. Quittance N° {payment.receipt_number}', 'success')
-        return redirect(url_for('payment.index'))
+        else:
+            existing_payment = Payment.query.filter_by(
+                property_id=tenant.property.id,
+                period_month=form.period_month.data,
+                period_year=form.period_year.data
+            ).first()
+            
+            if existing_payment:
+                flash(f'Un paiement existe déjà pour {tenant.property.name} pour le mois {form.period_month.data}/{form.period_year.data}.', 'error')
+            else:
+                payment = Payment(
+                    receipt_number=Payment.generate_receipt_number(),
+                    tenant_id=tenant.id,
+                    property_id=tenant.property.id,
+                    rent=form.rent.data,
+                    charges=form.charges.data or 0,
+                    penalties=form.penalties.data or 0,
+                    discount=form.discount.data or 0,
+                    amount=form.amount.data,
+                    date=form.date.data,
+                    period_month=form.period_month.data,
+                    period_year=form.period_year.data,
+                    payment_method=form.payment_method.data,
+                    transaction_ref=form.transaction_ref.data,
+                    notes=form.notes.data
+                )
+                
+                db.session.add(payment)
+                db.session.commit()
+                flash(f'Paiement de {form.amount.data} FCFA enregistré avec succès. Quittance N° {payment.receipt_number}', 'success')
+                return redirect(url_for('payment.index'))
         
     return render_template('payments/create.html', form=form, title='Nouveau Paiement', tenant_data=tenant_data)
 
